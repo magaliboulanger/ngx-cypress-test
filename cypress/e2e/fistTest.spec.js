@@ -105,7 +105,7 @@ describe('First test suite', () =>{
 
     })
 
-    it.only('extract text values', ()=>{
+    it('extract text values', ()=>{
         //visit base url
         cy.visit('/')
         //navigate through the tabs by text 
@@ -141,4 +141,37 @@ describe('First test suite', () =>{
         })
     })
     
+
+    it('radio buttons',()=>{
+        //visit base url
+        cy.visit('/')
+        //navigate through the tabs by text 
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
+        cy.contains('nb-card','Using the Grid').find('[type="radio"]').then(radioButtons => {
+            cy.wrap(radioButtons).eq(0).check({force: true}).should('be.checked') //force true because it is visually hidden and cypress cant continue
+            cy.wrap(radioButtons).eq(1).check({force: true})
+            cy.wrap(radioButtons).eq(0).should('not.be.checked')
+            cy.wrap(radioButtons).eq(2).should('be.disabled')
+        }
+        )
+    })
+
+    it.only('checkbox', ()=>{
+        //visit base url
+        cy.visit('/')
+        //navigate through the tabs by text 
+        cy.contains('Modal & Overlays').click()
+        cy.contains('Toastr').click()
+
+        //there are 3 checkboxes, this code checks/unchecks everyone
+        cy.get('[type="checkbox"]').check({force: true})
+        //same that above
+        cy.get('[type="checkbox"]').uncheck({force: true})
+
+
+        //in following examples, does not matter the status, it acts as a mouse click
+        cy.get('[type="checkbox"]').eq(0).click({force: true})
+        cy.get('[type="checkbox"]').eq(1).click({force: true})
+    })
 })
